@@ -41,6 +41,7 @@ const config = {
                     },
                     {
                         test: /\.(eot|svg|ttf|woff|woff2)$/,
+                        exclude: PUBLIC_DIR,
                         use: {
                             loader: 'file-loader',
                             options: {
@@ -66,7 +67,8 @@ const config = {
         contentBase: PUBLIC_DIR,
         watchContentBase: true,
         port: PORT,
-        compress: true
+        compress: true,
+        historyApiFallback: true
     }
 };
 
