@@ -7,6 +7,7 @@ const DIST_DIR = path.resolve(__dirname, 'dist');
 const SRC_DIR = path.resolve(__dirname, 'src');
 const PUBLIC_DIR = path.resolve(__dirname, 'public');
 const PORT = 3001;
+const APP_NAME = 'Application name';
 
 const config = {
     entry: `${SRC_DIR}/app/index.js`,
@@ -14,6 +15,7 @@ const config = {
         path: DIST_DIR,
         filename: 'bundle.js',
     },
+    mode: "development",
     module: {
         rules: [
             {
@@ -57,7 +59,7 @@ const config = {
     plugins: [
         new HtmlWebpackPlugin({
             hash: true,
-            title: 'React SVG sprite',
+            title: APP_NAME,
             template: `${PUBLIC_DIR}/index.html`,
             filename: 'index.html'
         }),
