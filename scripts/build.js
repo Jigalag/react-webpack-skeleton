@@ -3,7 +3,6 @@ const config = require('../webpack.config');
 const fs = require('fs-extra');
 const merge = require('webpack-merge');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -23,10 +22,6 @@ const prodConfig = merge(config, {
         ]
     },
     plugins: [
-        new MiniCssExtractPlugin({
-            filename: "[name].css",
-            chunkFilename: "[id].css"
-        }),
         new ExtractTextPlugin({
             filename: 'style.css'
         })
@@ -42,13 +37,6 @@ const prodConfig = merge(config, {
                             use: "css-loader!sass-loader",
                         })
                     },
-                ]
-            },
-            {
-                test: /\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    "css-loader"
                 ]
             }
         ]
