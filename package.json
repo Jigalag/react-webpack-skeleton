@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --colors --hot",
+    "start": "webpack-dev-server --mode development --colors --hot --config webpack.dev.js",
     "build": "node scripts/build.js"
   },
   "author": "",

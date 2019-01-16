@@ -5,6 +5,7 @@ const merge = require('webpack-merge');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 copyPublicFolder();
 
@@ -25,10 +26,24 @@ const prodConfig = merge(config, {
         new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css"
+        }),
+        new ExtractTextPlugin({
+            filename: 'style.css'
         })
     ],
     module: {
         rules: [
+            {
+                rules: [
+                    {
+                        test: /\.scss$/,
+                        use: ExtractTextPlugin.extract({
+                            fallback: "style-loader",
+                            use: "css-loader!sass-loader",
+                        })
+                    },
+                ]
+            },
             {
                 test: /\.css$/,
                 use: [

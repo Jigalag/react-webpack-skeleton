@@ -1,7 +1,6 @@
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const DIST_DIR = path.resolve(__dirname, 'dist');
 const SRC_DIR = path.resolve(__dirname, 'src');
@@ -15,7 +14,6 @@ const config = {
         path: DIST_DIR,
         filename: 'bundle.js',
     },
-    mode: "development",
     module: {
         rules: [
             {
@@ -26,30 +24,12 @@ const config = {
             {
                 oneOf: [
                     {
-                        test: /\.scss$/,
-                        use: ExtractTextPlugin.extract({
-                            fallback: "style-loader",
-                            use: "css-loader!sass-loader",
-                        })
-                    }
-                    ,
-                    {
-                        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+                        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.eot$/, /\.svg$/, /\.ttf$/, /\.woff$/, /\.woff2$/],
                         loader: require.resolve('url-loader'),
-                        options: {
-                            limit: 10000,
-                            name: 'img/[name].[ext]',
-                        },
-                    },
-                    {
-                        test: /\.(eot|svg|ttf|woff|woff2)$/,
                         exclude: PUBLIC_DIR,
-                        use: {
-                            loader: 'file-loader',
-                            options: {
-                                name: 'fonts/[name][hash].[ext]'
-                            }
-                        }
+                        options: {
+                            name: '[name].[ext]',
+                        },
                     }
                 ]
             }
@@ -62,8 +42,7 @@ const config = {
             title: APP_NAME,
             template: `${PUBLIC_DIR}/index.html`,
             filename: 'index.html'
-        }),
-        new ExtractTextPlugin('style.css')
+        })
     ],
     devServer: {
         contentBase: PUBLIC_DIR,
