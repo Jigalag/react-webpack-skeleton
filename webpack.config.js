@@ -5,7 +5,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DIST_DIR = path.resolve(__dirname, 'dist');
 const SRC_DIR = path.resolve(__dirname, 'src');
 const PUBLIC_DIR = path.resolve(__dirname, 'public');
-const PORT = 3001;
 const APP_NAME = 'Application name';
 
 const config = {
