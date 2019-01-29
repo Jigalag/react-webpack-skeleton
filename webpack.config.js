@@ -43,14 +43,7 @@ const config = {
             template: `${PUBLIC_DIR}/index.html`,
             filename: 'index.html'
         })
-    ],
-    devServer: {
-        contentBase: PUBLIC_DIR,
-        watchContentBase: true,
-        port: PORT,
-        compress: true,
-        historyApiFallback: true
-    }
+    ]
 };
 
 module.exports = config;
