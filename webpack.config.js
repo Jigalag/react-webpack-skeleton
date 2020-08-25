@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DIST_DIR = path.resolve(__dirname, 'dist');
 const SRC_DIR = path.resolve(__dirname, 'src');
 const PUBLIC_DIR = path.resolve(__dirname, 'public');
+const NODE_MODULES = path.resolve(__dirname, 'node_modules');
 const APP_NAME = 'Application name';
 
 const config = {
@@ -16,9 +17,66 @@ const config = {
     module: {
         rules: [
             {
+                test: /\.css$/,
+                exclude: [
+                    NODE_MODULES,
+                ],
+                use: [
+                    {
+                        loader: 'style-loader',
+                    },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true,
+                            importLoaders: 1,
+                            modules: true,
+                        },
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: path.join(__dirname, '.'),
+                            },
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.css$/,
+                include: [
+                    NODE_MODULES,
+                ],
+                use: [
+                    {
+                        loader: 'style-loader',
+                    },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true,
+                            importLoaders: 1,
+                            modules: false,
+                        },
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: path.join(__dirname, '.'),
+                            },
+                        },
+                    },
+                ],
+            },
+            {
                 test: /\.jsx?$/,
                 include: SRC_DIR,
-                loader: 'babel-loader'
+                loader: 'babel-loader',
+                options: {
+                    configFile: path.join(__dirname, 'babel.config.js'),
+                },
             },
             {
                 oneOf: [
