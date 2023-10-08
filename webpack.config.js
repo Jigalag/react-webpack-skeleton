@@ -1,106 +1,54 @@
 const path = require('path');
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const DIST_DIR = path.resolve(__dirname, 'dist');
-const SRC_DIR = path.resolve(__dirname, 'src');
-const PUBLIC_DIR = path.resolve(__dirname, 'public');
-const NODE_MODULES = path.resolve(__dirname, 'node_modules');
-const APP_NAME = 'Application name';
+const APP_NAME = 'Test Application';
 
-const config = {
-    entry: `${SRC_DIR}/app/index.js`,
+module.exports = {
     output: {
-        path: DIST_DIR,
+        path: path.join(__dirname, '/dist'),
         filename: 'bundle.js',
+        publicPath: '/'
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './public/index.html', // to import index.html file inside index.js
+            title: APP_NAME,
+        }),
+    ],
+    devServer: {
+        port: 3001,
+        compress: true,
+        open: true,
+        historyApiFallback: true
     },
     module: {
         rules: [
             {
-                test: /\.css$/,
-                exclude: [
-                    NODE_MODULES,
-                ],
-                use: [
-                    {
-                        loader: 'style-loader',
-                    },
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            sourceMap: true,
-                            importLoaders: 1,
-                            modules: true,
-                        },
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            config: {
-                                path: path.join(__dirname, '.'),
-                            },
-                        },
-                    },
-                ],
-            },
-            {
-                test: /\.css$/,
-                include: [
-                    NODE_MODULES,
-                ],
-                use: [
-                    {
-                        loader: 'style-loader',
-                    },
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            sourceMap: true,
-                            importLoaders: 1,
-                            modules: false,
-                        },
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            config: {
-                                path: path.join(__dirname, '.'),
-                            },
-                        },
-                    },
-                ],
-            },
-            {
-                test: /\.jsx?$/,
-                include: SRC_DIR,
-                loader: 'babel-loader',
-                options: {
-                    configFile: path.join(__dirname, 'babel.config.js'),
+                test: /\.(js|jsx)$/, // .js and .jsx files
+                exclude: /node_modules/, // excluding the node_modules folder
+                use: {
+                    loader: 'babel-loader',
                 },
             },
             {
-                oneOf: [
-                    {
-                        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.eot$/, /\.svg$/, /\.ttf$/, /\.woff$/, /\.woff2$/],
-                        loader: require.resolve('url-loader'),
-                        exclude: PUBLIC_DIR,
-                        options: {
-                            name: '[name].[ext]',
-                        },
-                    }
-                ]
-            }
-        ]
-
+                test: /\.(sa|sc|c)ss$/, // styles files
+                use: ['style-loader', 'css-loader', 'sass-loader'],
+            },
+            {
+                test: /\.(png|woff|woff2|eot|ttf|svg)$/, // to import images and fonts
+                loader: 'url-loader',
+                options: { limit: false },
+            },
+        ],
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            hash: true,
-            title: APP_NAME,
-            template: `${PUBLIC_DIR}/index.html`,
-            filename: 'index.html'
-        })
-    ]
+    resolve: {
+        alias: {
+            '@src': path.resolve(__dirname, 'src'),
+            '@components': path.resolve(__dirname, 'src/Components'),
+            '@store': path.resolve(__dirname, 'src/Store'),
+            '@utils': path.resolve(__dirname, 'src/Utils'),
+            '@pages': path.resolve(__dirname, 'src/Pages'),
+            '@providers': path.resolve(__dirname, 'src/Providers'),
+        },
+    },
 };
-
-module.exports = config;
